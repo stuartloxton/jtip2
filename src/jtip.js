@@ -9,11 +9,14 @@
  */
 
 //on page load (as soon as its ready) call JT_init
-$(document).ready(JT_init);
+
+jQuery(function() {
+	JT_init();
+});
 
 function JT_init(){
-	       $("a.jTip")
-		   .hover(function(){JT_show(this.href,this.id,this.name)},function(){$('#JT').remove()})
+	       jQuery("a.jTip")
+		   .hover(function(){JT_show(this.href,this.id,this.name)},function(){jQuery('#JT').remove()})
            .click(function(){return false});	   
 }
 
@@ -28,22 +31,22 @@ function JT_show(url,linkId,title){
 	var params = parseQuery( queryString );
 	if(params['width'] === undefined){params['width'] = 250};
 	if(params['link'] !== undefined){
-	$('#' + linkId).bind('click',function(){window.location = params['link']});
-	$('#' + linkId).css('cursor','pointer');
+	jQuery('#' + linkId).bind('click',function(){window.location = params['link']});
+	jQuery('#' + linkId).css('cursor','pointer');
 	}
 	
 	if(hasArea>((params['width']*1)+75)){
-		$("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
+		jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
 		var arrowOffset = getElementWidth(linkId) + 11;
 		var clickElementx = getAbsoluteLeft(linkId) + arrowOffset; //set x position
 	}else{
-		$("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
+		jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
 		var clickElementx = getAbsoluteLeft(linkId) - ((params['width']*1) + 15); //set x position
 	}
 	
-	$('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
-	$('#JT').show();
-	$('#JT_copy').load(url);
+	jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
+	jQuery('#JT').show();
+	jQuery('#JT_copy').load(url);
 
 }
 
