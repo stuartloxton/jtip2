@@ -47,8 +47,11 @@ jTip2 = {
 
 		jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
 		jQuery('#JT').show();
-		jQuery('#JT_copy').load(url);
-	}
+		jQuery('#JT_copy').load(url, function(data) {
+			jTip2.downloaded[url] = data;
+		});
+	},
+	downloaded: {}
 }
 
 jQuery(function() {
