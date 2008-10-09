@@ -10,45 +10,51 @@
 
 //on page load (as soon as its ready) call JT_init
 
+jTip2 = {
+	init: function() {
+		jQuery("a.jTip").hover(function() {
+			//JT_show(this.href,this.id,this.name);
+			jTip2.show(this.href, this.id, this.name);
+		}, function() {
+			jQuery('#JT').remove();
+		}).click(function() { 
+			return false;
+		});
+	},
+	show: function(url, linkId, title) {
+		if(title == false) title="&nbsp;";
+		var de = document.documentElement;
+		var w = self.innerWidth || (de&&de.clientWidth) || document.body.clientWidth;
+		var hasArea = w - getAbsoluteLeft(linkId);
+		var clickElementy = getAbsoluteTop(linkId) - 3; //set y position
+
+		var queryString = url.replace(/^[^\?]+\??/,'');
+		var params = parseQuery( queryString );
+		if(params['width'] === undefined){params['width'] = 250};
+		if(params['link'] !== undefined){
+		jQuery('#' + linkId).bind('click',function(){window.location = params['link']});
+		jQuery('#' + linkId).css('cursor','pointer');
+		}
+
+		if(hasArea>((params['width']*1)+75)){
+			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
+			var arrowOffset = getElementWidth(linkId) + 11;
+			var clickElementx = getAbsoluteLeft(linkId) + arrowOffset; //set x position
+		}else{
+			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
+			var clickElementx = getAbsoluteLeft(linkId) - ((params['width']*1) + 15); //set x position
+		}
+
+		jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
+		jQuery('#JT').show();
+		jQuery('#JT_copy').load(url);
+	}
+}
+
 jQuery(function() {
-	JT_init();
+	jTip2.init();
 });
 
-function JT_init(){
-	       jQuery("a.jTip")
-		   .hover(function(){JT_show(this.href,this.id,this.name)},function(){jQuery('#JT').remove()})
-           .click(function(){return false});	   
-}
-
-function JT_show(url,linkId,title){
-	if(title == false)title="&nbsp;";
-	var de = document.documentElement;
-	var w = self.innerWidth || (de&&de.clientWidth) || document.body.clientWidth;
-	var hasArea = w - getAbsoluteLeft(linkId);
-	var clickElementy = getAbsoluteTop(linkId) - 3; //set y position
-	
-	var queryString = url.replace(/^[^\?]+\??/,'');
-	var params = parseQuery( queryString );
-	if(params['width'] === undefined){params['width'] = 250};
-	if(params['link'] !== undefined){
-	jQuery('#' + linkId).bind('click',function(){window.location = params['link']});
-	jQuery('#' + linkId).css('cursor','pointer');
-	}
-	
-	if(hasArea>((params['width']*1)+75)){
-		jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
-		var arrowOffset = getElementWidth(linkId) + 11;
-		var clickElementx = getAbsoluteLeft(linkId) + arrowOffset; //set x position
-	}else{
-		jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
-		var clickElementx = getAbsoluteLeft(linkId) - ((params['width']*1) + 15); //set x position
-	}
-	
-	jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
-	jQuery('#JT').show();
-	jQuery('#JT_copy').load(url);
-
-}
 
 function getElementWidth(objectId) {
 	x = document.getElementById(objectId);
