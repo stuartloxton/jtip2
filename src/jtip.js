@@ -11,6 +11,10 @@
 jTip2 = {
 	init: function(options) {
 		jQuery(".jTip").hover(function() {
+			if(jTip2.needsDeleting) {
+				jQuery('#JT').remove();
+				jTip2.needsDeleting = false;
+			}
 			jTip2.show(this, options);
 		}, function() {
 			jTip2.hide(options);
@@ -24,29 +28,29 @@ jTip2 = {
 			fadeOut: 1000
 		}, options);
 		url = jQuery(reference).attr('href');
-		linkId = reference.id;
 		title = reference.name;
 		if(title == false) title="&nbsp;";
 		var de = document.documentElement;
 		var w = self.innerWidth || (de&&de.clientWidth) || document.body.clientWidth;
-		var hasArea = w - getAbsoluteLeft(linkId);
-		var clickElementy = getAbsoluteTop(linkId) - 3; //set y position
+		var position = jQuery(reference).position();
+		var hasArea = w - position.left;
+		var clickElementy = position.top - 3; //set y position
 
 		var queryString = url.replace(/^[^\?]+\??/,'');
 		var params = parseQuery( queryString );
 		if(params['width'] === undefined){params['width'] = 250};
 		if(params['link'] !== undefined){
-		jQuery('#' + linkId).bind('click',function(){window.location = params['link']});
-		jQuery('#' + linkId).css('cursor','pointer');
+		jQuery(reference).bind('click',function(){window.location = params['link']});
+		jQuery(reference).css('cursor','pointer');
 		}
 
 		if(hasArea>((params['width']*1)+75)){
 			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
-			var arrowOffset = getElementWidth(linkId) + 11;
-			var clickElementx = getAbsoluteLeft(linkId) + arrowOffset; //set x position
+			var arrowOffset = jQuery(reference).width() + 20;
+			var clickElementx = position.left + arrowOffset; //set x position
 		}else{
 			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
-			var clickElementx = getAbsoluteLeft(linkId) - ((params['width']*1) + 15); //set x position
+			var clickElementx = position.left - ((params['width']*1) + 15); //set x position
 		}
 
 		jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
@@ -64,15 +68,20 @@ jTip2 = {
 		}
 	},
 	hide: function(options) {
+		jTip2.needsDeleting = true;
 		settings = jQuery.extend({
 			fadeIn: 2000,
 			fadeOut: 500
 		}, options);
 		jQuery('#JT').fadeOut(settings.fadeOut, function() {
-			jQuery('#JT').remove();
+			if(jTip2.needsDeleting) {
+				jQuery('#JT').remove();
+				jTip2.needsDeleting = false;
+			}
 		});
 	},
-	downloaded: {}
+	downloaded: {},
+	needsDeleting: false
 }
 
 jQuery(function() {
