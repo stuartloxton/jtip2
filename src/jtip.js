@@ -8,13 +8,10 @@
  * JTip is built on top of the very light weight jquery library.
  */
 
-//on page load (as soon as its ready) call JT_init
-
 jTip2 = {
 	init: function() {
 		jQuery("a.jTip").hover(function() {
-			//JT_show(this.href,this.id,this.name);
-			jTip2.show(this.href, this.id, this.name);
+			jTip2.show(jQuery(this).attr('href'), this.id, this.name);
 		}, function() {
 			jQuery('#JT').remove();
 		}).click(function() { 
@@ -47,12 +44,16 @@ jTip2 = {
 
 		jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
 		jQuery('#JT').show();
-		if(typeof(jTip2.downloaded[url]) == 'undefined') {
-			jQuery('#JT_copy').load(url, function(data) {
-				jTip2.downloaded[url] = data;
-			});
+		if(/^#/.test(url)) {
+			jQuery('#JT_copy').html(jQuery(url).html());
 		} else {
-			jQuery('#JT_copy').html(jTip2.downloaded[url]);
+			if(typeof(jTip2.downloaded[url]) == 'undefined') {
+				jQuery('#JT_copy').load(url, function(data) {
+					jTip2.downloaded[url] = data;
+				});
+			} else {
+				jQuery('#JT_copy').html(jTip2.downloaded[url]);
+			}
 		}
 	},
 	downloaded: {}
