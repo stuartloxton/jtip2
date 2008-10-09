@@ -9,16 +9,23 @@
  */
 
 jTip2 = {
-	init: function() {
-		jQuery("a.jTip").hover(function() {
-			jTip2.show(jQuery(this).attr('href'), this.id, this.name);
+	init: function(options) {
+		jQuery(".jTip").hover(function() {
+			jTip2.show(this, options);
 		}, function() {
-			jQuery('#JT').remove();
+			jTip2.hide(options);
 		}).click(function() { 
 			return false;
 		});
 	},
-	show: function(url, linkId, title) {
+	show: function(reference, options) {
+		settings = jQuery.extend({
+			fadeIn: 2000,
+			fadeOut: 1000
+		}, options);
+		url = jQuery(reference).attr('href');
+		linkId = reference.id;
+		title = reference.name;
 		if(title == false) title="&nbsp;";
 		var de = document.documentElement;
 		var w = self.innerWidth || (de&&de.clientWidth) || document.body.clientWidth;
@@ -43,7 +50,7 @@ jTip2 = {
 		}
 
 		jQuery('#JT').css({left: clickElementx+"px", top: clickElementy+"px"});
-		jQuery('#JT').show();
+		jQuery('#JT').fadeIn(settings.fadeIn);
 		if(/^#/.test(url)) {
 			jQuery('#JT_copy').html(jQuery(url).html());
 		} else {
@@ -56,11 +63,20 @@ jTip2 = {
 			}
 		}
 	},
+	hide: function(options) {
+		settings = jQuery.extend({
+			fadeIn: 2000,
+			fadeOut: 500
+		}, options);
+		jQuery('#JT').fadeOut(settings.fadeOut, function() {
+			jQuery('#JT').remove();
+		});
+	},
 	downloaded: {}
 }
 
 jQuery(function() {
-	jTip2.init();
+	jTip2.init({});
 });
 
 
