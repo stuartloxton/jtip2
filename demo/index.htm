@@ -13,10 +13,16 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
 <script src="../src/jtip.js" type="text/javascript"></script>
 
+<script type="text/javascript" charset="utf-8">
+	jQuery(function() {
+		jQuery('a.jTipRel').jTipOn('rel');
+	});
+</script>
+
 </head>
 <body>
 <div id="contentPad">
-<p><a href="http://github.com/stuartloxton/jtip2/tree/master">What is this?</a></p>
+<p><a href="http://github.com/stuartloxton/jtip2/tree/master" class="jTipRel" rel="#inlineWhatis">What is this?</a></p>
 
 <p><strong>Roll over a question mark:</strong></p>
 
@@ -43,6 +49,9 @@
 <p><a href="yahoo.htm?width=175&amp;link=http://www.yahoo.com" name="Before You Click..." id="yahooCopy" class="jTip">Go To Yahoo</a></p>
 
 
+</div>
+<div id="inlineWhatis" style="display: none">
+	This is an updated version of Cody Lindleys jTip
 </div>
 </body>
 </html>
