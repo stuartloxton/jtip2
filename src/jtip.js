@@ -59,6 +59,31 @@ jTip2 = {
 		jQuery('#JT').fadeIn(settings.fadeIn);
 		if(/^#/.test(url)) {
 			jQuery('#JT_copy').html(jQuery(url).html());
+		} else if(/^\:/.test(url)) {
+			segs = url.split(':');
+			if(typeof(jTip2.downloaded[segs[1]]) == 'undefined') {
+				jQuery.getJSON(segs[1], function(data) {
+					jTip2.downloaded[segs[1]] = data;
+					pathL = segs.length;
+					pathI = 2;
+					soFar = jTip2.downloaded[segs[1]];
+					while(pathI < pathL) {
+						soFar = soFar[segs[pathI]];
+						pathI++;
+					}
+					jQuery('#JT_copy').html(soFar);
+				});
+			} else {
+				data = jTip2.downloaded[segs[1]];
+				pathL = segs.length;
+				pathI = 2;
+				soFar = jTip2.downloaded[segs[1]];
+				while(pathI < pathL) {
+					soFar = soFar[segs[pathI]];
+					pathI++;
+				}
+				jQuery('#JT_copy').html(soFar);
+			}
 		} else {
 			if(typeof(jTip2.downloaded[url]) == 'undefined') {
 				jQuery('#JT_copy').load(url, function(data) {
