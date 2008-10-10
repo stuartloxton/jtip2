@@ -1,0 +1,14 @@
+h1. jTip2
+
+jTip2 is an updated version of Cody Lindleys jTip. jTip2 is an easy and lightweight way to add tooltips to objects in an HTML page.
+
+
+h3. Finished Changes
+
+* Save AJAX calls so aren't repeated
+* Allow for inline documentation
+
+h3. Planned Changes
+
+* Create in a more jQuery style
+* Able to put on more objects (@jQuery(selector).jtip()@
