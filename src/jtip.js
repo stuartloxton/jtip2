@@ -34,6 +34,7 @@ jTip2 = {
 		var de = document.documentElement;
 		var w = self.innerWidth || (de&&de.clientWidth) || document.body.clientWidth;
 		var position = jQuery(reference).position();
+		var offset = jQuery(reference).offset();
 		var hasArea = w - position.left;
 		var clickElementy = position.top - 3; //set y position
     
@@ -48,7 +49,7 @@ jTip2 = {
 		if(hasArea>((params['width']*1)+75)){
 			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_left'></div><div id='JT_close_left'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//right side
 			var arrowOffset = jQuery(reference).width() + 20;
-			var clickElementx = position.left + arrowOffset; //set x position
+			var clickElementx = offset.left + arrowOffset; //set x position
 		}else{
 			jQuery("body").append("<div id='JT' style='width:"+params['width']*1+"px'><div id='JT_arrow_right' style='left:"+((params['width']*1)+1)+"px'></div><div id='JT_close_right'>"+title+"</div><div id='JT_copy'><div class='JT_loader'><div></div></div>");//left side
 			var clickElementx = position.left - ((params['width']*1) + 15); //set x position
@@ -116,12 +117,4 @@ function parseQuery ( query ) {
       Params[key] = val;
    }
    return Params;
-}
-
-function blockEvents(evt) {
-              if(evt.target){
-              evt.preventDefault();
-              }else{
-              evt.returnValue = false;
-              }
 }
