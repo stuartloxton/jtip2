@@ -17,19 +17,18 @@ jTip2 = {
 				jQuery('#JT').remove();
 				jTip2.needsDeleting = false;
 			}
-			jTip2.show(this, options);
+			jTip2.show(this, jQuery(this).attr('href'), options);
 		}, function() {
 			jTip2.hide(options);
 		}).click(function() { 
 			return false;
 		});
 	},
-	show: function(reference, options) {
+	show: function(reference, url, options) {
 		settings = jQuery.extend({
 			fadeIn: 2000,
 			fadeOut: 1000
 		}, options);
-		url = jQuery(reference).attr('href');
 		title = reference.name;
 		if(title == false) title="&nbsp;";
 		var de = document.documentElement;
@@ -85,8 +84,20 @@ jTip2 = {
 	downloaded: {}
 }
 
-jQuery.fn.jTipOn = function(x) {
-	console.log(x, this);
+jQuery.fn.jTipOn = function(x, options) {
+	this.each(function() {
+		$obj = jQuery(this);
+		$obj.hover(function() {
+			if(jTip2.needsDeleting) {
+				jQuery('#JT').remove();
+				jTip2.needsDeleting = false;
+			}
+			console.log($obj.attr(x));
+			jTip2.show(this, $obj.attr(x), options);
+		}, function() {
+			jTip2.hide();
+		});
+	});
 }
 
 jQuery(function() {
