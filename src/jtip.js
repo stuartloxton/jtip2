@@ -11,11 +11,7 @@
 //on page load (as soon as its ready) call JT_init
 
 jTip2 = {
-	show: function(reference, url, options) {
-		settings = jQuery.extend({
-			fadeIn: 2000,
-			fadeOut: 1000
-		}, options);
+	show: function(reference, url, settings) {
 		title = reference.name;
 		if(title == false) title="&nbsp;";
 		var de = document.documentElement;
@@ -98,16 +94,21 @@ jTip2 = {
 }
 
 jQuery.fn.jTipOn = function(x, options) {
+	settings = jQuery.extend({
+			showOn: 'mouseover',
+			hideOn: 'mouseout',
+			fadeIn: 2000,
+			fadeOut: 1000
+		}, options);
 	this.each(function() {
 		$obj = jQuery(this);
-		$obj.hover(function() {
-			if(jTip2.needsDeleting) {
-				jQuery('#JT').remove();
-				jTip2.needsDeleting = false;
-			}
-			jTip2.show(this, jQuery(this).attr(x), options);
-		}, function() {
-			jTip2.hide();
+		$obj.bind(settings.showOn, function() {
+			jQuery('#JT').remove();
+			jTip2.needsDeleting = false;
+			jTip2.show(this, jQuery(this).attr(x), settings);
+		});
+		$obj.bind(settings.hideOn, function() {
+			jTip2.hide();	
 		});
 	});
 }
@@ -118,7 +119,6 @@ jQuery.jTipPreloadURL = function(url) {
 }
 jQuery.jTipPreloadJSON = function(url) {
 	jQuery.getJSON(url, function(data) {
-		console.log('jTip2.downloaded['+url+']');
 		jTip2.downloaded[url] = data;
 	});
 }

@@ -10,13 +10,17 @@
 @import "../src/jtip.css";
 </style>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js" type="text/javascript"></script>
+<script src="../src/jquery.js" type="text/javascript"></script>
 <script src="../src/jtip.js" type="text/javascript"></script>
 
 <script type="text/javascript" charset="utf-8">
 	jQuery(function() {
 		jQuery.jTipPreloadJSON('json.js');
 		jQuery('a.jTip').jTipOn('href');
+		jQuery('input').jTipOn('rel', {
+			showOn: 'focus',
+			hideOn: 'blur'
+			});
 		jQuery('a.jTipRel').jTipOn('rel');
 		//console.log(jTip2.downloaded['json.js']);
 	});
@@ -32,12 +36,14 @@
 
 <p><strong>Roll over a question mark:</strong></p>
 
-<label style="padding-right:5px">Password</label><input name="" type="text" /><span class="formInfo"><a href="ajax.htm?width=375" class="jTip" name="Password must follow these rules:">?</a></span>
+<label style="padding-right:5px">Password</label>
+	<input rel="#jt_password" name="password" type="text" />
 
 <br />
 <br />
 
-<label style="padding-right:5px">User ID</label><input name="" type="text" /><span class="formInfo"><a href="ajax2.htm?width=475" class="jTip" id="two" name="">?</a></span>
+<label style="padding-right:5px">User ID</label>
+	<input rel="#jt_user" name="user_id" type="text" />
 
 <p><strong>Now supports <a href=":json.js:examples:json" class="jTip">JSON tooltips</a>&hellip; here is <a href=":json.js:examples:secondTip" class="jTip">another tip</a> from the same page.</strong>
 
@@ -57,6 +63,12 @@
 </div>
 <div id="inlineWhatis" style="display: none">
 	This is an updated version of Cody Lindleys jTip
+</div>
+<div id="jt_password" style="display: none">
+	Password must be awesome!
+</div>
+<div id="jt_user" style="display: none">
+	User ID must be numerical.
 </div>
 </body>
 </html>
