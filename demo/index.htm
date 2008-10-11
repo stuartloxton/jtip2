@@ -15,7 +15,10 @@
 
 <script type="text/javascript" charset="utf-8">
 	jQuery(function() {
+		jQuery.jTipPreloadJSON('json.js');
+		jQuery('a.jTip').jTipOn('href');
 		jQuery('a.jTipRel').jTipOn('rel');
+		//console.log(jTip2.downloaded['json.js']);
 	});
 </script>
 

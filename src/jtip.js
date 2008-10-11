@@ -11,19 +11,6 @@
 //on page load (as soon as its ready) call JT_init
 
 jTip2 = {
-	init: function(options) {
-		jQuery(".jTip").hover(function() {
-			if(jTip2.needsDeleting) {
-				jQuery('#JT').remove();
-				jTip2.needsDeleting = false;
-			}
-			jTip2.show(this, jQuery(this).attr('href'), options);
-		}, function() {
-			jTip2.hide(options);
-		}).click(function() { 
-			return false;
-		});
-	},
 	show: function(reference, url, options) {
 		settings = jQuery.extend({
 			fadeIn: 2000,
@@ -118,16 +105,23 @@ jQuery.fn.jTipOn = function(x, options) {
 				jQuery('#JT').remove();
 				jTip2.needsDeleting = false;
 			}
-			jTip2.show(this, $obj.attr(x), options);
+			jTip2.show(this, jQuery(this).attr(x), options);
 		}, function() {
 			jTip2.hide();
 		});
 	});
 }
-
-jQuery(function() {
-	jTip2.init();
-});
+jQuery.jTipPreloadURL = function(url) {
+	jQuery.get(url, function(data) {
+		jTip2.downloaded[url] = data;
+	});
+}
+jQuery.jTipPreloadJSON = function(url) {
+	jQuery.getJSON(url, function(data) {
+		console.log('jTip2.downloaded['+url+']');
+		jTip2.downloaded[url] = data;
+	});
+}
 
 function parseQuery ( query ) {
    var Params = new Object ();
